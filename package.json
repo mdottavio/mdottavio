@@ -1,0 +1,22 @@
+{
+  "name": "covidstats",
+  "version": "1.0.0",
+  "description": "<!-- **mdottavio/mdottavio** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdottavio/mdottavio.git"
+  },
+  "author": "dottavio@gmail.com",
+  "bugs": {
+    "url": "https://github.com/mdottavio/mdottavio/issues"
+  },
+  "homepage": "https://github.com/mdottavio/mdottavio#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.0"
+  }
+}
