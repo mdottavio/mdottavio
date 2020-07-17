@@ -1,0 +1,52 @@
+# This is a basic workflow to help you get started with Actions
+
+name: updateReadme
+
+on:
+  schedule:
+    - cron:  '*/5 * * * *'
+      
+jobs:
+  covid-stats:
+    name: Covid stats
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: covidstats
+    - uses: actions/setup-node@v1
+    - run: yarn --frozen-lockfile
+    - id: run
+      run: |
+        NEWREADME="$(yarn --silent start)"
+        echo "::set-output name=newreadme::$NEWREADME"
+    outputs:
+      chart: ${{ steps.run.outputs.newreadme }}
+
+
+  update:
+    needs:
+    - covid-stats
+    name: Update README.md
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: master
+    - run: |
+        cat <<'EOF' | tee README.md
+        ${{ needs.msft-stock.outputs.chart }}
+        EOF
+    - id: changed
+      run: git diff --exit-code
+      continue-on-error: true
+    - if: ${{ steps.changed.outcome == 'failure' }}
+      run: |
+        git add README.md
+        git config --local user.name "GitHub Action"
+        git config --local user.email action@github.com
+        git commit --message 'Update README.md'
+    - if: ${{ steps.changed.outcome == 'failure' }}
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ github.token }}
