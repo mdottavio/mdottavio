@@ -20,10 +20,12 @@ jobs:
     - id: run
       run: |
         NEWREADME="$(yarn --silent start)"
+        NEWREADME="${NEWREADME//'%'/'%25'}"
+        NEWREADME="${NEWREADME//$'\n'/'%0A'}"
+        NEWREADME="${NEWREADME//$'\r'/'%0D'}"
         echo "::set-output name=newreadme::$NEWREADME"
     outputs:
       newreadme: ${{ steps.run.outputs.newreadme }}
-
 
   update:
     needs:
