@@ -15,6 +15,7 @@
   "bugs": {
     "url": "https://github.com/mdottavio/mdottavio/issues"
   },
+  "license": "UNLICENSED",
   "homepage": "https://github.com/mdottavio/mdottavio#readme",
   "dependencies": {
     "node-fetch": "^2.6.0"
