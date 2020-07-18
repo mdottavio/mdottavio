@@ -1,4 +1,5 @@
-# This is a basic workflow to help you get started with Actions
+# Based on the Gerhut's great work
+# https://github.com/Gerhut/Gerhut/tree/master/.github/workflows
 
 name: updateReadme
 
