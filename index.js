@@ -21,6 +21,7 @@ ${table.toString()}
 \`\`\`
 
 Total Cases ${data.total_cases} 🦠
+
 Recovered Percentage ${data.closed_cases_recovered_percentage}% 😌
 
 ### Please, use your Mask 😷
