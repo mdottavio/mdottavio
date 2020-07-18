@@ -10,6 +10,7 @@
 ```
 
 Total Cases 14,153,083 🦠
+
 Recovered Percentage 93.0% 😌
 
 ### Please, use your Mask 😷
