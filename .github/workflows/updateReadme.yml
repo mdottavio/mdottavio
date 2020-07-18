@@ -35,7 +35,7 @@ jobs:
         ref: master
     - run: |
         cat <<'EOF' | tee README.md
-        ${{ needs.msft-stock.outputs.chart }}
+        ${{ needs.covid-stats.outputs.chart }}
         EOF
     - id: changed
       run: git diff --exit-code
