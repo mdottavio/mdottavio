@@ -22,7 +22,7 @@ jobs:
         NEWREADME="$(yarn --silent start)"
         echo "::set-output name=newreadme::$NEWREADME"
     outputs:
-      chart: ${{ steps.run.outputs.newreadme }}
+      newreadme: ${{ steps.run.outputs.newreadme }}
 
 
   update:
