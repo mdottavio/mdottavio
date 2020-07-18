@@ -36,12 +36,12 @@ jobs:
         ref: master
     - run: |
         cat <<'EOF' | tee README.md
-        ${{ needs.covid-stats.outputs.chart }}
+        ${{ needs.covid-stats.outputs.newreadme }}
         EOF
     - id: changed
       run: git diff --exit-code
       continue-on-error: true
-    - if: ${{ steps.changed.outcome !== 'failure' }}
+    - if: ${{ steps.changed.outcome === 'failure' }}
       run: |
         git add README.md
         git config --local user.name "GitHub Action"
