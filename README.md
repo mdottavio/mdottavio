@@ -4,8 +4,8 @@
 
 | Covid-19 stats | | Total | Today |
 |-----------------|-----------------------------|---------|---------|
-| Cases | <img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/total.svg" "width=100%" style="min-width: 40px" /> | 16106759 | +175314 |
-| Death | <img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/death.svg" "width=100%" style="min-width: 40px" /> | 645805 | +3920 |
+| Cases | <img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/total.svg" "width=100%" style="min-width: 40px" /> | 16109188 | +177743 |
+| Death | <img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/death.svg" "width=100%" style="min-width: 40px" /> | 645843 | +3958 |
 | Recovered | <img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/recovered.svg" "width=100%" style="min-width: 40px" /> | 9857344 | |
 
 ### Please, use a Mask 😷
@@ -15,7 +15,7 @@ I'm Mauricio, I wanted to showcase the power of Github's workflow while sending 
 If you're interested in seeing how this work, check the source code of [the workflow](https://github.com/mdottavio/mdottavio/blob/master/.github/workflows/updateReadme.yml) that runs periodically, firing
 the [Node script](https://github.com/mdottavio/mdottavio/tree/covidstats) that fetch and format the data.
 
-> Last update: 7/25/2020, 8:43:28 PM UTC
+> Last update: 7/25/2020, 8:53:32 PM UTC
 >
 > Source [https://thevirustracker.com/](https://thevirustracker.com/).
 
