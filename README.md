@@ -3,6 +3,7 @@
 ### Please, use a Mask 😷
 
 | Covid-19 stats | | | |
+|-----------------|-----------------------------|---------|---------|
 | Total Cases | <img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/total.svg" width=100% /> | 16078913 | +147468 |
 | Death Cases | <img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/death.svg" width=100% /> | 645241 | +3356 |
 | Recovered Cases | <img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/recovered.svg" width=100% /> | 9826460 | |
