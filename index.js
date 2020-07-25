@@ -13,7 +13,7 @@ const generateImg = (amount, total, fill, bgColor) => {
   return `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 33">
   <style>
-    @keyframes dash {
+    @keyframes grow {
       from { stroke-dashoffset: 1; }
       to { stroke-dashoffset: 0; }
     }
@@ -27,12 +27,12 @@ const generateImg = (amount, total, fill, bgColor) => {
       stroke-miterlimit: 2;
       stroke-width: 66px;
     }
-    .segment {
-      animation: dash 0.313286s linear 1 forwards;
-      animation-delay: 0s;
+    .bar {
+      animation: grow 0.313286s cubic-bezier(0.165, 0.840, 0.440, 1.000) 1 forwards;
+      animation-delay: 900ms;
     }
   </style>
-  <path class="segment" d="M 0 13 L ${(amount * 100 / total)} 13" pathLength="1" stroke="${hexToRgba(fill)}"/>
+  <path class="bar" d="M 0 13 L ${(amount * 100 / total)} 13" pathLength="1" stroke="${hexToRgba(fill)}"/>
 </svg>
   `;
 };
@@ -50,10 +50,11 @@ const generateDoc = (results, imgFolderUrl) => {
   return `
 ### Please, use a Mask 😷
 
-| Covid-19 stats | | | |
-| Total Cases | <img src="${imgFolderUrl}total.svg" width=100% /> | ${total_cases} | +${total_new_cases_today} |
-| Death Cases | <img src="${imgFolderUrl}death.svg" width=100% /> | ${total_deaths} | +${total_new_deaths_today} |
-| Recovered Cases | <img src="${imgFolderUrl}recovered.svg" width=100% /> | ${total_recovered} | |
+| Covid-19 stats | | Total | Today |
+|-----------------|-----------------------------|---------|---------|
+| Cases | <img src="${imgFolderUrl}total.svg" width=100% /> | ${total_cases} | +${total_new_cases_today} |
+| Death | <img src="${imgFolderUrl}death.svg" width=100% /> | ${total_deaths} | +${total_new_deaths_today} |
+| Recovered | <img src="${imgFolderUrl}recovered.svg" width=100% /> | ${total_recovered} | |
 
 ### Please, use a Mask 😷
 
