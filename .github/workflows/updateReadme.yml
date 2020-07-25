@@ -23,8 +23,18 @@ jobs:
         NEWREADME="${NEWREADME//'%'/'%25'}"
         NEWREADME="${NEWREADME//$'\n'/'%0A'}"
         NEWREADME="${NEWREADME//$'\r'/'%0D'}"
+        SVGTOTAL=$(echo $NEWREADME | awk -F 'Begintotal|Endtotal' '{print $2}')
+        SVGDEATH=$(echo $NEWREADME | awk -F 'Begindeath|Enddeath' '{print $2}')
+        SVGRECOVERED=$(echo $NEWREADME | awk -F 'Beginrecovered|Endrecovered' '{print $2}')
+        NEWREADME=$(echo $NEWREADME | awk -F 'BeginReadme|EndReadme' '{print $2}')
+        echo "::set-output name=svgtotal::$SVGTOTAL"
+        echo "::set-output name=svgdeath::$SVGDEATH"
+        echo "::set-output name=svgrecovered::$SVGRECOVERED"
         echo "::set-output name=newreadme::$NEWREADME"
     outputs:
+      svgtotal: ${{ steps.run.outputs.svgtotal }}
+      svgdeath: ${{ steps.run.outputs.svgdeath }}
+      svgrecovered: ${{ steps.run.outputs.svgrecovered }}
       newreadme: ${{ steps.run.outputs.newreadme }}
 
   update:
@@ -40,6 +50,18 @@ jobs:
         cat <<'EOF' | tee README.md
         ${{ needs.covid-stats.outputs.newreadme }}
         EOF
+    - run: |
+        cat <<'EOF' | tee imgs/total.svg
+        ${{ needs.covid-stats.outputs.svgtotal }}
+        EOF
+    - run: |
+        cat <<'EOF' | tee imgs/death.svg
+        ${{ needs.covid-stats.outputs.svgdeath }}
+        EOF
+    - run: |
+        cat <<'EOF' | tee imgs/recovered.svg
+        ${{ needs.covid-stats.outputs.svgrecovered }}
+        EOF
     - id: changed
       run: git diff --exit-code
       continue-on-error: true
@@ -48,7 +70,7 @@ jobs:
         git add README.md
         git config --local user.name "GitHub Action"
         git config --local user.email action@github.com
-        git commit --message 'Update README.md'
+        git commit --message 'Update README.md and SVGs'
     - if: ${{ steps.changed.outcome == 'failure' }}
       uses: ad-m/github-push-action@master
       with:
