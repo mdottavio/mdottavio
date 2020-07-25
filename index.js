@@ -81,14 +81,14 @@ fetchData()
   };
 
   const files = Object.keys(imgs).map((index) => (`
-<${index}>
+Begin${index}
   ${imgs[index]}
-</${index}>`));
+End${index}`));
 
   console.log(`${files.join('')}
-<readme>
+  BeginReadme
 ${readme}
-</readme>`);
+  EndReadme`);
   process.exit(0);
 })
 .catch((err) => {
