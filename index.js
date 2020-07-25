@@ -52,9 +52,9 @@ const generateDoc = (results, imgFolderUrl) => {
 
 | Covid-19 stats | | Total | Today |
 |-----------------|-----------------------------|---------|---------|
-| Cases | <img src="${imgFolderUrl}total.svg" "width=100%" style="min-width: 40px" /> | ${total_cases} | +${total_new_cases_today} |
-| Death | <img src="${imgFolderUrl}death.svg" "width=100%" style="min-width: 40px" /> | ${total_deaths} | +${total_new_deaths_today} |
-| Recovered | <img src="${imgFolderUrl}recovered.svg" "width=100%" style="min-width: 40px" /> | ${total_recovered} | |
+| Cases | <img src="${imgFolderUrl}total.svg" width=100% style="min-width: 40px" /> | ${total_cases} | +${total_new_cases_today} |
+| Death | <img src="${imgFolderUrl}death.svg" width=100% style="min-width: 40px" /> | ${total_deaths} | +${total_new_deaths_today} |
+| Recovered | <img src="${imgFolderUrl}recovered.svg" width=100% style="min-width: 40px" /> | ${total_recovered} | |
 
 ### Please, use a Mask 😷
 
