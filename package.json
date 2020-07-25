@@ -18,7 +18,7 @@
   "license": "UNLICENSED",
   "homepage": "https://github.com/mdottavio/mdottavio#readme",
   "dependencies": {
-    "cli-table": "^0.3.1",
+    "hex-to-rgba": "^2.0.1",
     "node-fetch": "^2.6.0"
   }
 }
