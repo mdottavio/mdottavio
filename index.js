@@ -1,37 +1,56 @@
 const fetch = require('node-fetch');
-const Table = require('cli-table');
+const hexToRgba = require('hex-to-rgba');
 
 const STATS_URL = 'https://api.thevirustracker.com/free-api?global=stats';
+const imgFolderUrl = 'https://raw.githubusercontent.com/mdottavio/mdottavio/imgs/';
 
 const fetchData = async () => {
   const response = await fetch(STATS_URL);
   return await response.json();
 };
-const generateDoc = ({ results }) => {
+
+const generateImg = (amount, total, fill) => {
+  return `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 33">
+  <style>
+    @keyframes dash {
+      from { stroke-dashoffset: 1; }
+      to { stroke-dashoffset: 0; }
+    }
+    svg path{
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      fill: transparent;
+      stroke-miterlimit: 2;
+      stroke-width: 66px;
+    }
+    .segment {
+      animation: dash 0.313286s linear 1 forwards;
+      animation-delay: 0s;
+    }
+  </style>
+  <path class="segment" d="M 0 13 L ${(amount * 100 / total)} 13" pathLength="1" stroke="${hexToRgba(fill)}"/>
+</svg>
+  `;
+};
+
+const generateDoc = (results, imgFolderUrl) => {
   const [ {
     total_cases,
     total_new_cases_today,
     total_recovered,
     total_deaths,
+    total_new_deaths_today,
     source,
   } ] = results;
-  const table = new Table({
-    head: ['Recovered Cases', 'Death Cases']
-    , colWidths: [35, 35]
-  });
-  table.push([total_recovered, total_deaths]);
   const lastUpdate = new Date(Date.now()).toLocaleString();
-
   return `
 ### Covid-19 stats
 
-\`\`\`
-${table.toString()}
-\`\`\`
-
-🦠Total Cases ${total_cases}
-
-🗓 New cases today ${total_new_cases_today}
+| Total Cases | <img src="${imgFolderUrl}total.svg" /> | ${total_cases} | +${total_new_cases_today} |
+|-----------------|-----------------------------|---------|---------|
+| Death Cases | <img src="${imgFolderUrl}death.svg" /> | ${total_deaths} | ${total_new_deaths_today}
+| Recovered Cases | <img src="${imgFolderUrl}recovered.svg" /> | ${total_recovered} | |
 
 ### Please, use a Mask 😷
 
@@ -42,14 +61,34 @@ the [Node script](https://github.com/mdottavio/mdottavio/tree/covidstats) that f
 
 > Last update: ${lastUpdate} UTC
 >
-> Data from [${source.url}](${source.url}).
+> Source [${source.url}](${source.url}).
 `;
 }
 
 fetchData()
-.then((data) => generateDoc(data))
-.then((data) => {
-  console.log(data);
+.then(({ results }) => {
+  const readme = generateDoc(results, imgFolderUrl);
+  const [ {
+    total_cases,
+    total_recovered,
+    total_deaths,
+  } ] = results;
+
+  const imgs = {
+    total: generateImg(total_cases, total_cases, '#c72e45'),
+    death: generateImg(total_deaths, total_cases, '#3e4149'),
+    recovered: generateImg(total_recovered, total_cases, '#4ea1d3'),
+  };
+
+  const files = Object.keys(imgs).map((index) => (`
+Begin${index}
+  ${imgs[index]}
+End${index}`));
+
+  console.log(`${files.join('')}
+  BeginReadme
+${readme}
+  EndReadme`);
   process.exit(0);
 })
 .catch((err) => {
