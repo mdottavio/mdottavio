@@ -1,20 +1,24 @@
+
+ 
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 33">
-  <style>
-    @keyframes dash {
-      from { stroke-dashoffset: 1; }
-      to { stroke-dashoffset: 0; }
-    }
-    svg path{
-      stroke-dasharray: 1;
-      stroke-dashoffset: 1;
-      fill: transparent;
-      stroke-miterlimit: 2;
-      stroke-width: 66px;
-    }
-    .segment {
-      animation: dash 0.313286s linear 1 forwards;
-      animation-delay: 0s;
-    }
-  </style>
-  <path class="segment" d="M 0 13 L 10 13" pathLength="1" stroke="rgba(78, 161, 211, 1)"/>
+ <style>
+ @keyframes dash {
+ from { stroke-dashoffset: 1; }
+ to { stroke-dashoffset: 0; }
+ }
+ svg path{
+ stroke-dasharray: 1;
+ stroke-dashoffset: 1;
+ fill: transparent;
+ stroke-miterlimit: 2;
+ stroke-width: 66px;
+ }
+ .segment {
+ animation: dash 0.313286s linear 1 forwards;
+ animation-delay: 0s;
+ }
+ </style>
+ <path class="segment" d="M 0 13 L 61.09871190811604 13" pathLength="1" stroke="rgba(78, 161, 211, 1)"/>
 </svg>
+ 
+
