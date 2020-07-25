@@ -68,6 +68,9 @@ jobs:
     - if: ${{ steps.changed.outcome == 'failure' }}
       run: |
         git add README.md
+        git add imgs/total.svg
+        git add imgs/death.svg
+        git add imgs/recovered.svg
         git config --local user.name "GitHub Action"
         git config --local user.email action@github.com
         git commit --message 'Update README.md and SVGs'
