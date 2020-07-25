@@ -2,7 +2,7 @@
  
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 33">
  <style>
- @keyframes dash {
+ @keyframes grow {
  from { stroke-dashoffset: 1; }
  to { stroke-dashoffset: 0; }
  }
@@ -16,12 +16,12 @@
  stroke-miterlimit: 2;
  stroke-width: 66px;
  }
- .segment {
- animation: dash 0.313286s linear 1 forwards;
- animation-delay: 0s;
+ .bar {
+ animation: grow 0.313286s cubic-bezier(0.165, 0.840, 0.440, 1.000) 1 forwards;
+ animation-delay: 900ms;
  }
  </style>
- <path class="segment" d="M 0 13 L 61.11384864424941 13" pathLength="1" stroke="rgba(78, 161, 211, 1)"/>
+ <path class="bar" d="M 0 13 L 61.11384864424941 13" pathLength="1" stroke="rgba(78, 161, 211, 1)"/>
 </svg>
  
 
