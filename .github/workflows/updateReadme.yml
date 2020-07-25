@@ -3,9 +3,7 @@
 
 name: updateReadme
 
-on:
-  schedule:
-    - cron:  '*/10 * * * *'
+on: repository_dispatch
       
 jobs:
   covid-stats:
