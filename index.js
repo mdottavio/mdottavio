@@ -2,20 +2,23 @@ const fetch = require('node-fetch');
 const hexToRgba = require('hex-to-rgba');
 
 const STATS_URL = 'https://api.thevirustracker.com/free-api?global=stats';
-const imgFolderUrl = 'https://raw.githubusercontent.com/mdottavio/mdottavio/imgs/';
+const imgFolderUrl = 'https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/';
 
 const fetchData = async () => {
   const response = await fetch(STATS_URL);
   return await response.json();
 };
 
-const generateImg = (amount, total, fill) => {
+const generateImg = (amount, total, fill, bgColor) => {
   return `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 33">
   <style>
     @keyframes dash {
       from { stroke-dashoffset: 1; }
       to { stroke-dashoffset: 0; }
+    }
+    svg{
+      background: ${hexToRgba(bgColor)};
     }
     svg path{
       stroke-dasharray: 1;
@@ -47,10 +50,10 @@ const generateDoc = (results, imgFolderUrl) => {
   return `
 ### Covid-19 stats
 
-| Total Cases | <img src="${imgFolderUrl}total.svg" /> | ${total_cases} | +${total_new_cases_today} |
+| Total Cases | <img src="${imgFolderUrl}total.svg" width=100% /> | ${total_cases} | +${total_new_cases_today} |
 |-----------------|-----------------------------|---------|---------|
-| Death Cases | <img src="${imgFolderUrl}death.svg" /> | ${total_deaths} | ${total_new_deaths_today}
-| Recovered Cases | <img src="${imgFolderUrl}recovered.svg" /> | ${total_recovered} | |
+| Death Cases | <img src="${imgFolderUrl}death.svg" width=100% /> | ${total_deaths} | ${total_new_deaths_today}
+| Recovered Cases | <img src="${imgFolderUrl}recovered.svg" width=100% /> | ${total_recovered} | |
 
 ### Please, use a Mask 😷
 
@@ -75,9 +78,9 @@ fetchData()
   } ] = results;
 
   const imgs = {
-    total: generateImg(total_cases, total_cases, '#c72e45'),
-    death: generateImg(total_deaths, total_cases, '#3e4149'),
-    recovered: generateImg(total_recovered, total_cases, '#4ea1d3'),
+    total: generateImg(total_cases, total_cases, '#C72E45', '#E0E3DA'),
+    death: generateImg(total_deaths, total_cases, '#3E4149', '#E0E3DA'),
+    recovered: generateImg(total_recovered, total_cases, '#4EA1D3', '#E0E3DA'),
   };
 
   const files = Object.keys(imgs).map((index) => (`
