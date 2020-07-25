@@ -21,7 +21,7 @@
  animation-delay: 0s;
  }
  </style>
- <path class="segment" d="M 0 13 L 4.012964060443638 13" pathLength="1" stroke="rgba(62, 65, 73, 1)"/>
+ <path class="segment" d="M 0 13 L 4.012954077295953 13" pathLength="1" stroke="rgba(62, 65, 73, 1)"/>
 </svg>
  
 
