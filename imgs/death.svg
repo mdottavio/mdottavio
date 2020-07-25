@@ -6,6 +6,9 @@
  from { stroke-dashoffset: 1; }
  to { stroke-dashoffset: 0; }
  }
+ svg{
+ background: rgba(224, 227, 218, 1);
+ }
  svg path{
  stroke-dasharray: 1;
  stroke-dashoffset: 1;
@@ -18,7 +21,7 @@
  animation-delay: 0s;
  }
  </style>
- <path class="segment" d="M 0 13 L 4.013700880652706 13" pathLength="1" stroke="rgba(62, 65, 73, 1)"/>
+ <path class="segment" d="M 0 13 L 4.012964060443638 13" pathLength="1" stroke="rgba(62, 65, 73, 1)"/>
 </svg>
  
 

@@ -6,6 +6,9 @@
  from { stroke-dashoffset: 1; }
  to { stroke-dashoffset: 0; }
  }
+ svg{
+ background: rgba(224, 227, 218, 1);
+ }
  svg path{
  stroke-dasharray: 1;
  stroke-dashoffset: 1;
