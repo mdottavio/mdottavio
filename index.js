@@ -48,11 +48,11 @@ const generateDoc = (results, imgFolderUrl) => {
   } ] = results;
   const lastUpdate = new Date(Date.now()).toLocaleString();
   return `
-### Covid-19 stats
+### Please, use a Mask 😷
 
+| Covid-19 stats | | | |
 | Total Cases | <img src="${imgFolderUrl}total.svg" width=100% /> | ${total_cases} | +${total_new_cases_today} |
-|-----------------|-----------------------------|---------|---------|
-| Death Cases | <img src="${imgFolderUrl}death.svg" width=100% /> | ${total_deaths} | ${total_new_deaths_today}
+| Death Cases | <img src="${imgFolderUrl}death.svg" width=100% /> | ${total_deaths} | +${total_new_deaths_today} |
 | Recovered Cases | <img src="${imgFolderUrl}recovered.svg" width=100% /> | ${total_recovered} | |
 
 ### Please, use a Mask 😷
