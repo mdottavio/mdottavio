@@ -5,13 +5,13 @@
 ┌───────────────────────────────────┬───────────────────────────────────┐
 │ Recovered Cases                   │ Death Cases                       │
 ├───────────────────────────────────┼───────────────────────────────────┤
-│ 9712288                           │ 641805                            │
+│ 9715811                           │ 641841                            │
 └───────────────────────────────────┴───────────────────────────────────┘
 ```
 
-🦠Total Cases 15927977
+🦠Total Cases 15929904
 
-🗓 New cases today 285560
+🗓 New cases today 287487
 
 ### Please, use a Mask 😷
 
@@ -20,6 +20,6 @@ I'm Mauricio, I wanted to showcase the power of Github's workflow while sending 
 If you're interested in seeing how this work, check the source code of [the workflow](https://github.com/mdottavio/mdottavio/blob/master/.github/workflows/updateReadme.yml) that runs periodically, firing
 the [Node script](https://github.com/mdottavio/mdottavio/tree/covidstats) that fetch and format the data.
 
-> Last update: 7/24/2020, 11:52:11 PM UTC
+> Last update: 7/25/2020, 12:17:50 AM UTC
 >
 > Data from [https://thevirustracker.com/](https://thevirustracker.com/).
