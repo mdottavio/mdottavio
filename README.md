@@ -4,9 +4,9 @@
 
 | Covid-19 stats | | Total | Today |
 |-----------------|-----------------------------|---------|---------|
-| Cases | <img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/total.svg" "width=100%" style="min-width: 40px" /> | 16102782 | +171337 |
-| Death | <img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/death.svg" "width=100%" style="min-width: 40px" /> | 645686 | +3801 |
-| Recovered | <img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/recovered.svg" "width=100%" style="min-width: 40px" /> | 9845058 | |
+| Cases | <img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/total.svg" "width=100%" style="min-width: 40px" /> | 16104540 | +173095 |
+| Death | <img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/death.svg" "width=100%" style="min-width: 40px" /> | 645752 | +3867 |
+| Recovered | <img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/recovered.svg" "width=100%" style="min-width: 40px" /> | 9846946 | |
 
 ### Please, use a Mask 😷
 
@@ -15,7 +15,7 @@ I'm Mauricio, I wanted to showcase the power of Github's workflow while sending 
 If you're interested in seeing how this work, check the source code of [the workflow](https://github.com/mdottavio/mdottavio/blob/master/.github/workflows/updateReadme.yml) that runs periodically, firing
 the [Node script](https://github.com/mdottavio/mdottavio/tree/covidstats) that fetch and format the data.
 
-> Last update: 7/25/2020, 8:23:30 PM UTC
+> Last update: 7/25/2020, 8:33:30 PM UTC
 >
 > Source [https://thevirustracker.com/](https://thevirustracker.com/).
 
