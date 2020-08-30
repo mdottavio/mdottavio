@@ -21,7 +21,7 @@
  animation-delay: 900ms;
  }
  </style>
- <path class="bar" d="M 0 13 L 3.3644299173909524 13" pathLength="1" stroke="rgba(62, 65, 73, 1)"/>
+ <path class="bar" d="M 0 13 L 3.35194979522576 13" pathLength="1" stroke="rgba(62, 65, 73, 1)"/>
 </svg>
  
 
