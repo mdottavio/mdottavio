@@ -96,7 +96,7 @@ the [Node script](https://github.com/mdottavio/mdottavio/tree/covidstats) that f
 
 > Last update: ${lastUpdate} UTC
 >
-> Source [${source.publicUrl}](${source.name}).
+> Source [${source.name}](${source.publicUrl}).
 `;
 };
 
@@ -109,7 +109,7 @@ fetch(source.dataUrl)
       results;
 
     const imgs = {
-      total: generateImg(new_cases, total_cases, "#C72E45", "#E0E3DA"),
+      total: generateImg(total_cases, total_cases, "#C72E45", "#E0E3DA"),
       death: generateImg(total_deaths, total_cases, "#3E4149", "#E0E3DA"),
       vaccination: generateImg(
         total_vaccinations,
