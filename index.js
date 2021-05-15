@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const hexToRgba = require("hex-to-rgba");
+const QuickChart = require("quickchart-js");
 
 const source = {
   name: "Our World in Data",
@@ -11,7 +11,16 @@ const source = {
 const imgFolderUrl =
   "https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/";
 
-const processDataPerCountry = async (data) => {
+const continentCodes = [
+  "OWID_SAM",
+  "OWID_OCE",
+  "OWID_NAM",
+  "OWID_EUN",
+  "OWID_EUR",
+  "OWID_ASI",
+  "OWID_AFR",
+];
+const filterContinents = async (data) => {
   const results = {
     total_cases: 0,
     total_deaths: 0,
@@ -19,80 +28,129 @@ const processDataPerCountry = async (data) => {
     new_cases: 0,
     new_deaths: 0,
     new_vaccinations: 0,
+    population: 0,
   };
-  Object.keys(data).forEach((countryCode) => {
-    const {
-      total_cases,
-      total_deaths,
-      total_vaccinations,
-      new_cases,
-      new_deaths,
-      new_vaccinations,
-      continent,
-    } = data[countryCode];
-    if (continent) {
-      results.total_cases += total_cases;
-      results.total_deaths += total_deaths;
-      results.total_vaccinations += total_vaccinations;
-      results.new_cases += new_cases;
-      results.new_deaths += new_deaths;
-      results.new_vaccinations += new_vaccinations;
-    }
+  return Object.keys(data)
+    .filter((countryCode) => continentCodes.includes(countryCode))
+    .map((code) => ({
+      code,
+      location: data[code].location,
+      total_cases: data[code].total_cases,
+      total_deaths: data[code].total_deaths,
+      total_vaccinations: data[code].total_vaccinations,
+      new_cases: data[code].new_cases,
+      new_deaths: data[code].new_deaths,
+      new_vaccinations: data[code].new_vaccinations,
+      population: data[code].population,
+    }));
+};
+
+const generateImg = async (listByContinent) => {
+  const chart = new QuickChart();
+  chart.setWidth(900);
+  chart.setHeight(400);
+  chart.setConfig({
+    type: "line",
+    data: {
+      labels: listByContinent.map(({ location }) => location),
+      datasets: [
+        {
+          type: "line",
+          label: "Vaccination %",
+          fontColor: "#697477",
+          backgroundColor: "#126e82",
+          borderColor: "#126e82",
+          data: listByContinent.map(
+            ({ population, total_vaccinations }) =>
+              (total_vaccinations / population) * 100
+          ),
+          fill: false,
+          yAxisID: "percentage",
+        },
+        {
+          type: "bar",
+          label: "Vaccinated population",
+          fontColor: "#697477",
+          backgroundColor: "rgba(81, 196, 211, .8)",
+          borderColor: "rgba(81, 196, 211, .8)",
+          data: listByContinent.map(
+            ({ total_vaccinations }) => total_vaccinations
+          ),
+          fill: false,
+          yAxisID: "population",
+        },
+        {
+          type: "bar",
+          label: "Not Vaccinated population",
+          fontColor: "#697477",
+          backgroundColor: "rgba(246, 99, 132,.8)",
+          borderColor: "rgba(246, 99, 132,.8)",
+          data: listByContinent.map(
+            ({ population, total_vaccinations }) =>
+              population - total_vaccinations
+          ),
+          fill: false,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+        xAxes: [
+          {
+            stacked: true,
+          },
+        ],
+        yAxes: [
+          {
+            id: "population",
+            ticks: {
+              fontColor: "#697477",
+              callback: (val) => `${val / 1000000}M`,
+            },
+            stacked: true,
+          },
+          {
+            id: "percentage",
+            position: "right",
+            ticks: {
+              fontColor: "#132c33",
+              callback: (val) => val + "%",
+            },
+            stacked: true,
+          },
+        ],
+      },
+      plugins: {
+        datalabels: {
+          anchor: "end",
+          align: "top",
+          color: "#000",
+          backgroundColor: "rgba(165, 225, 173, .54)",
+          borderColor: "rgba(165, 225, 173, 1.0)",
+          borderWidth: 1,
+          borderRadius: 5,
+          formatter: (value) => {
+            return `${Math.round(value * 100) / 100} %`;
+          },
+          display: function ({ datasetIndex }) {
+            return datasetIndex === 0;
+          },
+        },
+      },
+    },
   });
-  return results;
+  const image = await chart.toBinary();
+  return image;
 };
 
-const generateImg = (amount, total, fill, bgColor) => {
-  const imgWidth = 250;
-  const imgHeight = 33;
-  const percent = ((amount * imgWidth) / total) * 100;
-  return `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${imgWidth} ${imgHeight}">
-  <style>
-    @keyframes grow {
-      from { stroke-dashoffset: 1; }
-      to { stroke-dashoffset: 0; }
-    }
-    svg{
-      background: ${hexToRgba(bgColor)};
-    }
-    svg path{
-      stroke-dasharray: 1;
-      stroke-dashoffset: 1;
-      fill: transparent;
-      stroke-miterlimit: 2;
-      stroke-width: 66px;
-    }
-    .bar {
-      animation: grow 0.313286s cubic-bezier(0.165, 0.840, 0.440, 1.000) 1 forwards;
-      animation-delay: 900ms;
-    }
-  </style>
-  <path class="bar" d="M 0 13 L ${percent} 13" pathLength="1" stroke="${hexToRgba(
-    fill
-  )}"/>
-</svg>
-  `;
-};
-
-const generateDoc = (results, imgFolderUrl, source) => {
-  const {
-    total_cases,
-    total_deaths,
-    total_vaccinations,
-    new_deaths,
-    new_cases,
-    new_vaccinations,
-  } = results;
+const generateDoc = (imgFolderUrl, source) => {
   const lastUpdate = new Date(Date.now()).toLocaleString();
   return `
-### Please, use a Mask 😷
-
-| Covid-19 stats | | Total | Today |
-|-----------------|-----------------------------|---------|---------|
-| Cases | <img src="${imgFolderUrl}total.svg" width=100% style="min-width: 40px" /> | ${total_cases} | +${new_cases} |
-| Death | <img src="${imgFolderUrl}death.svg" width=100% style="min-width: 40px" /> | ${total_deaths} | +${new_deaths} |
-| Vaccination | <img src="${imgFolderUrl}vaccination.svg" width=100% style="min-width: 40px" /> | ${total_vaccinations} | +${new_vaccinations} |
+### Vaccination progress
+img src="${imgFolderUrl}progress.png" width=100% />
 
 ### Please, use a Mask 😷
 
@@ -109,40 +167,18 @@ the [Node script](https://github.com/mdottavio/mdottavio/tree/covidstats) that f
 
 fetch(source.dataUrl)
   .then((res) => res.json())
-  .then((data) => processDataPerCountry(data))
-  .then((results) => {
-    const readme = generateDoc(results, imgFolderUrl, source);
-    const {
-      total_cases,
-      new_deaths,
-      total_deaths,
-      total_vaccinations,
-      new_vaccinations,
-      new_cases,
-    } = results;
-    const imgs = {
-      total: generateImg(new_cases, total_cases, "#C72E45", "#E0E3DA"),
-      death: generateImg(new_deaths, total_deaths, "#3E4149", "#E0E3DA"),
-      vaccination: generateImg(
-        new_vaccinations,
-        total_vaccinations,
-        "#4EA1D3",
-        "#E0E3DA"
-      ),
-    };
+  .then((data) => filterContinents(data))
+  .then((listByContinent) => generateImg(listByContinent))
+  .then((img) => {
+    const readme = generateDoc(imgFolderUrl, source);
+    console.log(`
+  BeginProgressImg
+    ${img}
+  EndProgressImg
 
-    const files = Object.keys(imgs).map(
-      (index) => `
-    Begin${index}
-      ${imgs[index]}
-    End${index}`
-    );
-
-    console.log(`${files.join("")}
-      BeginReadme
-    ${readme}
-      EndReadme`);
-    process.exit(0);
+  BeginReadme
+  ${readme}
+  EndReadme`);
   })
   .catch((err) => {
     console.log(err);

@@ -19,6 +19,7 @@
   "homepage": "https://github.com/mdottavio/mdottavio#readme",
   "dependencies": {
     "hex-to-rgba": "^2.0.1",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "quickchart-js": "^1.0.7"
   }
 }
