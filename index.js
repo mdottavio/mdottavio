@@ -1,12 +1,42 @@
-const fetch = require('node-fetch');
-const hexToRgba = require('hex-to-rgba');
+const fetch = require("node-fetch");
+const hexToRgba = require("hex-to-rgba");
 
-const STATS_URL = 'https://api.thevirustracker.com/free-api?global=stats';
-const imgFolderUrl = 'https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/';
+const source = {
+  name: "Our World in Data",
+  publicUrl: "https://github.com/owid/covid-19-data",
+  dataUrl:
+    "https://gitcdn.link/repo/owid/covid-19-data/master/public/data/latest/owid-covid-latest.json",
+};
 
-const fetchData = async () => {
-  const response = await fetch(STATS_URL);
-  return await response.json();
+const imgFolderUrl =
+  "https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/";
+
+const processDataPerCountry = async (data) => {
+  const results = {
+    total_cases: 0,
+    total_deaths: 0,
+    total_vaccinations: 0,
+    new_cases: 0,
+    new_deaths: 0,
+  };
+  Object.keys(data).forEach((countryCode) => {
+    const {
+      total_cases,
+      total_deaths,
+      total_vaccinations,
+      new_cases,
+      new_deaths,
+      continent,
+    } = data[countryCode];
+    if (continent) {
+      results.total_cases += total_cases;
+      results.total_deaths += total_deaths;
+      results.total_vaccinations += total_vaccinations;
+      results.new_cases += new_cases;
+      results.new_deaths += new_deaths;
+    }
+  });
+  return results;
 };
 
 const generateImg = (amount, total, fill, bgColor) => {
@@ -32,29 +62,30 @@ const generateImg = (amount, total, fill, bgColor) => {
       animation-delay: 900ms;
     }
   </style>
-  <path class="bar" d="M 0 13 L ${(amount * 100 / total)} 13" pathLength="1" stroke="${hexToRgba(fill)}"/>
+  <path class="bar" d="M 0 13 L ${
+    (amount * 100) / total
+  } 13" pathLength="1" stroke="${hexToRgba(fill)}"/>
 </svg>
   `;
 };
 
-const generateDoc = (results, imgFolderUrl) => {
-  const [ {
+const generateDoc = (results, imgFolderUrl, source) => {
+  const {
     total_cases,
-    total_new_cases_today,
-    total_recovered,
     total_deaths,
-    total_new_deaths_today,
-    source,
-  } ] = results;
+    total_vaccinations,
+    new_deaths,
+    new_cases,
+  } = results;
   const lastUpdate = new Date(Date.now()).toLocaleString();
   return `
 ### Please, use a Mask 😷
 
 | Covid-19 stats | | Total | Today |
 |-----------------|-----------------------------|---------|---------|
-| Cases | <img src="${imgFolderUrl}total.svg" width=100% style="min-width: 40px" /> | ${total_cases} | +${total_new_cases_today} |
-| Death | <img src="${imgFolderUrl}death.svg" width=100% style="min-width: 40px" /> | ${total_deaths} | +${total_new_deaths_today} |
-| Recovered | <img src="${imgFolderUrl}recovered.svg" width=100% style="min-width: 40px" /> | ${total_recovered} | |
+| Cases | <img src="${imgFolderUrl}total.svg" width=100% style="min-width: 40px" /> | ${total_cases} | +${new_cases} |
+| Death | <img src="${imgFolderUrl}death.svg" width=100% style="min-width: 40px" /> | ${total_deaths} | +${new_deaths} |
+| Vaccination | <img src="${imgFolderUrl}vaccination.svg" width=100% style="min-width: 40px" /> | ${total_vaccinations} | |
 
 ### Please, use a Mask 😷
 
@@ -65,37 +96,43 @@ the [Node script](https://github.com/mdottavio/mdottavio/tree/covidstats) that f
 
 > Last update: ${lastUpdate} UTC
 >
-> Source [${source.url}](${source.url}).
+> Source [${source.publicUrl}](${source.name}).
 `;
-}
+};
 
-fetchData()
-.then(({ results }) => {
-  const readme = generateDoc(results, imgFolderUrl);
-  const [ {
-    total_cases,
-    total_recovered,
-    total_deaths,
-  } ] = results;
+fetch(source.dataUrl)
+  .then((res) => res.json())
+  .then((data) => processDataPerCountry(data))
+  .then((results) => {
+    const readme = generateDoc(results, imgFolderUrl, source);
+    const { total_cases, total_deaths, total_vaccinations, new_cases } =
+      results;
 
-  const imgs = {
-    total: generateImg(total_cases, total_cases, '#C72E45', '#E0E3DA'),
-    death: generateImg(total_deaths, total_cases, '#3E4149', '#E0E3DA'),
-    recovered: generateImg(total_recovered, total_cases, '#4EA1D3', '#E0E3DA'),
-  };
+    const imgs = {
+      total: generateImg(new_cases, total_cases, "#C72E45", "#E0E3DA"),
+      death: generateImg(total_deaths, total_cases, "#3E4149", "#E0E3DA"),
+      vaccination: generateImg(
+        total_vaccinations,
+        total_cases,
+        "#4EA1D3",
+        "#E0E3DA"
+      ),
+    };
 
-  const files = Object.keys(imgs).map((index) => (`
-Begin${index}
-  ${imgs[index]}
-End${index}`));
+    const files = Object.keys(imgs).map(
+      (index) => `
+    Begin${index}
+      ${imgs[index]}
+    End${index}`
+    );
 
-  console.log(`${files.join('')}
-  BeginReadme
-${readme}
-  EndReadme`);
-  process.exit(0);
-})
-.catch((err) => {
+    console.log(`${files.join("")}
+      BeginReadme
+    ${readme}
+      EndReadme`);
+    process.exit(0);
+  })
+  .catch((err) => {
     console.log(err);
     process.exit(1);
-});
+  });
