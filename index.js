@@ -18,6 +18,7 @@ const processDataPerCountry = async (data) => {
     total_vaccinations: 0,
     new_cases: 0,
     new_deaths: 0,
+    new_vaccinations: 0,
   };
   Object.keys(data).forEach((countryCode) => {
     const {
@@ -26,6 +27,7 @@ const processDataPerCountry = async (data) => {
       total_vaccinations,
       new_cases,
       new_deaths,
+      new_vaccinations,
       continent,
     } = data[countryCode];
     if (continent) {
@@ -34,14 +36,18 @@ const processDataPerCountry = async (data) => {
       results.total_vaccinations += total_vaccinations;
       results.new_cases += new_cases;
       results.new_deaths += new_deaths;
+      results.new_vaccinations += new_vaccinations;
     }
   });
   return results;
 };
 
 const generateImg = (amount, total, fill, bgColor) => {
+  const imgWidth = 250;
+  const imgHeight = 33;
+  const percent = ((amount * imgWidth) / total) * 100;
   return `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 33">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${imgWidth} ${imgHeight}">
   <style>
     @keyframes grow {
       from { stroke-dashoffset: 1; }
@@ -62,9 +68,9 @@ const generateImg = (amount, total, fill, bgColor) => {
       animation-delay: 900ms;
     }
   </style>
-  <path class="bar" d="M 0 13 L ${
-    (amount * 100) / total
-  } 13" pathLength="1" stroke="${hexToRgba(fill)}"/>
+  <path class="bar" d="M 0 13 L ${percent} 13" pathLength="1" stroke="${hexToRgba(
+    fill
+  )}"/>
 </svg>
   `;
 };
@@ -76,6 +82,7 @@ const generateDoc = (results, imgFolderUrl, source) => {
     total_vaccinations,
     new_deaths,
     new_cases,
+    new_vaccinations,
   } = results;
   const lastUpdate = new Date(Date.now()).toLocaleString();
   return `
@@ -85,7 +92,7 @@ const generateDoc = (results, imgFolderUrl, source) => {
 |-----------------|-----------------------------|---------|---------|
 | Cases | <img src="${imgFolderUrl}total.svg" width=100% style="min-width: 40px" /> | ${total_cases} | +${new_cases} |
 | Death | <img src="${imgFolderUrl}death.svg" width=100% style="min-width: 40px" /> | ${total_deaths} | +${new_deaths} |
-| Vaccination | <img src="${imgFolderUrl}vaccination.svg" width=100% style="min-width: 40px" /> | ${total_vaccinations} | |
+| Vaccination | <img src="${imgFolderUrl}vaccination.svg" width=100% style="min-width: 40px" /> | ${total_vaccinations} | +${new_vaccinations} |
 
 ### Please, use a Mask 😷
 
@@ -105,15 +112,20 @@ fetch(source.dataUrl)
   .then((data) => processDataPerCountry(data))
   .then((results) => {
     const readme = generateDoc(results, imgFolderUrl, source);
-    const { total_cases, total_deaths, total_vaccinations, new_cases } =
-      results;
-
+    const {
+      total_cases,
+      new_deaths,
+      total_deaths,
+      total_vaccinations,
+      new_vaccinations,
+      new_cases,
+    } = results;
     const imgs = {
-      total: generateImg(total_cases, total_cases, "#C72E45", "#E0E3DA"),
-      death: generateImg(total_deaths, total_cases, "#3E4149", "#E0E3DA"),
+      total: generateImg(new_cases, total_cases, "#C72E45", "#E0E3DA"),
+      death: generateImg(new_deaths, total_deaths, "#3E4149", "#E0E3DA"),
       vaccination: generateImg(
+        new_vaccinations,
         total_vaccinations,
-        total_cases,
         "#4EA1D3",
         "#E0E3DA"
       ),
