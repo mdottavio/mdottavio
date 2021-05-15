@@ -26,16 +26,16 @@ jobs:
           NEWREADME="${NEWREADME//$'\r'/'%0D'}"
           SVGTOTAL=$(echo $NEWREADME | awk -F 'Begintotal|Endtotal' '{print $2}')
           SVGDEATH=$(echo $NEWREADME | awk -F 'Begindeath|Enddeath' '{print $2}')
-          SVGVACCIANATION=$(echo $NEWREADME | awk -F 'Beginvaccionation|Endvaccionation' '{print $2}')
+          SVGVACCINATION=$(echo $NEWREADME | awk -F 'Beginvaccination|Endvaccination' '{print $2}')
           NEWREADME=$(echo $NEWREADME | awk -F 'BeginReadme|EndReadme' '{print $2}')
           echo "::set-output name=svgtotal::$SVGTOTAL"
           echo "::set-output name=svgdeath::$SVGDEATH"
-          echo "::set-output name=svgvaccionation::$SVGVACCIANATION"
+          echo "::set-output name=svgvaccination::$SVGVACCINATION"
           echo "::set-output name=newreadme::$NEWREADME"
     outputs:
       svgtotal: ${{ steps.run.outputs.svgtotal }}
       svgdeath: ${{ steps.run.outputs.svgdeath }}
-      svgvaccionation: ${{ steps.run.outputs.svgvaccionation }}
+      svgvaccination: ${{ steps.run.outputs.svgvaccination }}
       newreadme: ${{ steps.run.outputs.newreadme }}
 
   update:
