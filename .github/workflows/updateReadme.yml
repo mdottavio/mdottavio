@@ -60,8 +60,8 @@ jobs:
           ${{ needs.covid-stats.outputs.svgdeath }}
           EOF
       - run: |
-          cat <<'EOF' | tee imgs/vaccionation.svg
-          ${{ needs.covid-stats.outputs.svgvaccionation }}
+          cat <<'EOF' | tee imgs/vaccination.svg
+          ${{ needs.covid-stats.outputs.svgvaccination }}
           EOF
       - id: changed
         run: git diff --exit-code
