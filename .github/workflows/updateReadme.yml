@@ -3,78 +3,78 @@
 
 name: updateReadme
 
-on:   
+on:
   schedule:
-    - cron:  '10 21 * * *'
-      
+    - cron: "10 21 * * *"
+
 jobs:
   covid-stats:
     name: Covid stats
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: covidstats
-    - uses: actions/setup-node@v1
-    - run: yarn --frozen-lockfile
-    - id: run
-      run: |
-        NEWREADME="$(yarn --silent start)"
-        NEWREADME="${NEWREADME//'%'/'%25'}"
-        NEWREADME="${NEWREADME//$'\n'/'%0A'}"
-        NEWREADME="${NEWREADME//$'\r'/'%0D'}"
-        SVGTOTAL=$(echo $NEWREADME | awk -F 'Begintotal|Endtotal' '{print $2}')
-        SVGDEATH=$(echo $NEWREADME | awk -F 'Begindeath|Enddeath' '{print $2}')
-        SVGRECOVERED=$(echo $NEWREADME | awk -F 'Beginrecovered|Endrecovered' '{print $2}')
-        NEWREADME=$(echo $NEWREADME | awk -F 'BeginReadme|EndReadme' '{print $2}')
-        echo "::set-output name=svgtotal::$SVGTOTAL"
-        echo "::set-output name=svgdeath::$SVGDEATH"
-        echo "::set-output name=svgrecovered::$SVGRECOVERED"
-        echo "::set-output name=newreadme::$NEWREADME"
+      - uses: actions/checkout@v2
+        with:
+          ref: covidstats
+      - uses: actions/setup-node@v1
+      - run: yarn --frozen-lockfile
+      - id: run
+        run: |
+          NEWREADME="$(yarn --silent start)"
+          NEWREADME="${NEWREADME//'%'/'%25'}"
+          NEWREADME="${NEWREADME//$'\n'/'%0A'}"
+          NEWREADME="${NEWREADME//$'\r'/'%0D'}"
+          SVGTOTAL=$(echo $NEWREADME | awk -F 'Begintotal|Endtotal' '{print $2}')
+          SVGDEATH=$(echo $NEWREADME | awk -F 'Begindeath|Enddeath' '{print $2}')
+          SVGVACCIANATION=$(echo $NEWREADME | awk -F 'Beginvaccionation|Endvaccionation' '{print $2}')
+          NEWREADME=$(echo $NEWREADME | awk -F 'BeginReadme|EndReadme' '{print $2}')
+          echo "::set-output name=svgtotal::$SVGTOTAL"
+          echo "::set-output name=svgdeath::$SVGDEATH"
+          echo "::set-output name=svgvaccionation::$SVGVACCIANATION"
+          echo "::set-output name=newreadme::$NEWREADME"
     outputs:
       svgtotal: ${{ steps.run.outputs.svgtotal }}
       svgdeath: ${{ steps.run.outputs.svgdeath }}
-      svgrecovered: ${{ steps.run.outputs.svgrecovered }}
+      svgvaccionation: ${{ steps.run.outputs.svgvaccionation }}
       newreadme: ${{ steps.run.outputs.newreadme }}
 
   update:
     needs:
-    - covid-stats
+      - covid-stats
     name: Update README.md
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: master
-    - run: |
-        cat <<'EOF' | tee README.md
-        ${{ needs.covid-stats.outputs.newreadme }}
-        EOF
-    - run: |
-        cat <<'EOF' | tee imgs/total.svg
-        ${{ needs.covid-stats.outputs.svgtotal }}
-        EOF
-    - run: |
-        cat <<'EOF' | tee imgs/death.svg
-        ${{ needs.covid-stats.outputs.svgdeath }}
-        EOF
-    - run: |
-        cat <<'EOF' | tee imgs/recovered.svg
-        ${{ needs.covid-stats.outputs.svgrecovered }}
-        EOF
-    - id: changed
-      run: git diff --exit-code
-      continue-on-error: true
-    - if: ${{ steps.changed.outcome == 'failure' }}
-      run: |
-        git add README.md
-        git add imgs/total.svg
-        git add imgs/death.svg
-        git add imgs/recovered.svg
-        git config --local user.name "GitHub Action"
-        git config --local user.email action@github.com
-        git commit --message 'Update README.md and SVGs'
-    - if: ${{ steps.changed.outcome == 'failure' }}
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ github.token }}
+      - uses: actions/checkout@v2
+        with:
+          ref: master
+      - run: |
+          cat <<'EOF' | tee README.md
+          ${{ needs.covid-stats.outputs.newreadme }}
+          EOF
+      - run: |
+          cat <<'EOF' | tee imgs/total.svg
+          ${{ needs.covid-stats.outputs.svgtotal }}
+          EOF
+      - run: |
+          cat <<'EOF' | tee imgs/death.svg
+          ${{ needs.covid-stats.outputs.svgdeath }}
+          EOF
+      - run: |
+          cat <<'EOF' | tee imgs/vaccionation.svg
+          ${{ needs.covid-stats.outputs.svgvaccionation }}
+          EOF
+      - id: changed
+        run: git diff --exit-code
+        continue-on-error: true
+      - if: ${{ steps.changed.outcome == 'failure' }}
+        run: |
+          git add README.md
+          git add imgs/total.svg
+          git add imgs/death.svg
+          git add imgs/vaccionation.svg
+          git config --local user.name "GitHub Action"
+          git config --local user.email action@github.com
+          git commit --message 'Update README.md and SVGs'
+      - if: ${{ steps.changed.outcome == 'failure' }}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ github.token }}
