@@ -15,7 +15,7 @@ I'm Mauricio, I wanted to showcase the power of Github's workflow while sending 
 If you're interested in seeing how this work, check the source code of [the workflow](https://github.com/mdottavio/mdottavio/blob/master/.github/workflows/updateReadme.yml) that runs periodically, firing
 the [Node script](https://github.com/mdottavio/mdottavio/tree/covidstats) that fetch and format the data.
 
-> Last update: 5/15/2021, 3:24:27 PM UTC
+> Last update: 5/15/2021, 3:28:00 PM UTC
 >
 > Source [Our World in Data](https://github.com/owid/covid-19-data).
 
