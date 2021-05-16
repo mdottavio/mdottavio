@@ -1,0 +1,42 @@
+name: updateReadmeViaAssets
+
+on:
+  # schedule:
+  #   - cron: "10 21 * * *"
+  workflow_dispatch:
+    inputs:
+      source_branch:
+        description: "Source code branch"
+        required: true
+        default: "covidstats-d3"
+
+jobs:
+  generate-assets:
+    name: Generate Assets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.source_branch }}
+      - uses: actions/setup-node@v1
+      - run: yarn --frozen-lockfile
+      - run: yarn --silent start
+
+  update:
+    needs:
+      - generate-assets
+    name: Update README.md
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.source_branch }}
+      - uses: andstor/copycat-action@v3
+        with:
+          personal_token: ${{ github.token }}
+          src_path: /temp/README.md
+          dst_path: /README.md
+          dst_owner: mdottavio
+          dst_repo_name: mdottavio
+          dst_branch: master
+          src_branch: ${{ github.event.inputs.source_branch }}
