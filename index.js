@@ -1,26 +1,35 @@
-const fetch = require("node-fetch");
-const QuickChart = require("quickchart-js");
+import fetch from "node-fetch";
+import { promises as fs } from "fs";
+import QuickChart from "quickchart-js";
 
 const source = {
   name: "Our World in Data",
   publicUrl: "https://github.com/owid/covid-19-data",
   dataUrl:
     "https://gitcdn.link/repo/owid/covid-19-data/master/public/data/latest/owid-covid-latest.json",
+  continentCodes: [
+    "OWID_SAM",
+    "OWID_OCE",
+    "OWID_NAM",
+    "OWID_EUN",
+    "OWID_EUR",
+    "OWID_ASI",
+    "OWID_AFR",
+  ],
 };
 
-const imgFolderUrl =
-  "https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/";
+const assets = {
+  chart: {
+    publicUrl:
+      "https://raw.githubusercontent.com/mdottavio/mdottavio/master/imgs/progress.png",
+    path: "./temp/progress.png",
+  },
+  readme: {
+    path: "./temp/README.md",
+  },
+};
 
-const continentCodes = [
-  "OWID_SAM",
-  "OWID_OCE",
-  "OWID_NAM",
-  "OWID_EUN",
-  "OWID_EUR",
-  "OWID_ASI",
-  "OWID_AFR",
-];
-const filterContinents = async (data) => {
+const filterContinents = async (data, continentCodes) => {
   const results = {
     total_cases: 0,
     total_deaths: 0,
@@ -45,7 +54,7 @@ const filterContinents = async (data) => {
     }));
 };
 
-const generateImg = async (listByContinent) => {
+const generateChart = async (listByContinent, path) => {
   const chart = new QuickChart();
   chart.setWidth(900);
   chart.setHeight(400);
@@ -142,20 +151,17 @@ const generateImg = async (listByContinent) => {
       },
     },
   });
-  const image = await chart.toBinary();
-  return image;
+  await chart.toFile(path);
 };
 
-const generateDoc = (imgFolderUrl, source) => {
+const generateReadme = async (source, path, chartPublicUrl) => {
   const lastUpdate = new Date(Date.now()).toLocaleString();
-  return `
+  const newReadme = `
 ### Vaccination progress
-img src="${imgFolderUrl}progress.png" width=100% />
-
-### Please, use a Mask 😷
+<img src="${chartPublicUrl}" width=100% />
 
 #### Hi there 👋
-I'm Mauricio, I wanted to showcase the power of Github's workflow while sending a message to those who landed here.
+I'm Mauricio. On this simple readme I wanted to showcase the power of Github's workflow while sending a message to those who landed here.
 If you're interested in seeing how this work, check the source code of [the workflow](https://github.com/mdottavio/mdottavio/blob/master/.github/workflows/updateReadme.yml) that runs periodically, firing
 the [Node script](https://github.com/mdottavio/mdottavio/tree/covidstats) that fetch and format the data.
 
@@ -163,22 +169,15 @@ the [Node script](https://github.com/mdottavio/mdottavio/tree/covidstats) that f
 >
 > Source [${source.name}](${source.publicUrl}).
 `;
+  await fs.writeFile(path, newReadme, "utf8");
 };
 
 fetch(source.dataUrl)
   .then((res) => res.json())
-  .then((data) => filterContinents(data))
-  .then((listByContinent) => generateImg(listByContinent))
-  .then((img) => {
-    const readme = generateDoc(imgFolderUrl, source);
-    console.log(`
-  BeginProgressImg
-    ${img}
-  EndProgressImg
-
-  BeginReadme
-  ${readme}
-  EndReadme`);
+  .then((data) => filterContinents(data, source.continentCodes))
+  .then((listByContinent) => generateChart(listByContinent, assets.chart.path))
+  .then(() => {
+    generateReadme(source, assets.readme.path, assets.chart.publicUrl);
   })
   .catch((err) => {
     console.log(err);

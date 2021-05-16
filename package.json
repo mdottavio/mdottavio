@@ -1,6 +1,7 @@
 {
   "name": "covidstats",
   "version": "1.0.0",
+  "type": "module",
   "description": "<!-- **mdottavio/mdottavio** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.",
   "main": "index.js",
   "scripts": {
