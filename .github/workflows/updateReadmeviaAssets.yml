@@ -24,8 +24,8 @@ jobs:
       - run: yarn --frozen-lockfile
       - run: yarn --silent start
       - run: |
-          git add /temp/README.md
-          git add /temp/progress.png
+          git add ./temp/README.md
+          git add ./temp/progress.png
           git config --local user.name "GitHub Action"
           git config --local user.email action@github.com
           git commit --message 'Update README.md and chart'
@@ -45,8 +45,8 @@ jobs:
       - uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ github.token }}
-          src_path: /temp/README.md
-          dst_path: /README.md
+          src_path: ./temp/README.md
+          dst_path: ./README.md
           dst_owner: mdottavio
           dst_repo_name: mdottavio
           dst_branch: master
