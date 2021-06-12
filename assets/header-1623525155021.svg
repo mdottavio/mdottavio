@@ -1,4 +1,4 @@
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1280" height="250" viewBox="0 0 1280 250" stroke="currentColor">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1280" height="250" viewBox="0 0 1280 250">
   <style>
     path {
       stroke-dasharray: 1000;
@@ -16,10 +16,16 @@
         stroke-width: 2;
       }
     }
-    path {
+    rect {
       stroke: currentColor;
     }
+    path {
+      stroke: rgb(34, 39, 46);
+    }
     @media (prefers-color-scheme: dark) {
+      rect {
+        fill: rgb(34, 39, 46);
+      }
       path {
         stroke: rgb(255,255,255);
       }
@@ -27,6 +33,7 @@
   </style>
   <defs />
   <g>
+    <rect fill="none" stroke-width="1" width="1282" height="252" y="-1" x="-1" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null"/>
     <path fill="none" paint-order="fill stroke markers" d=" M 200.70449807569833 1264.1668024640508 C 410 20 440 300 47.90847358204657 1279.103114748392" stroke-linecap="round" stroke-miterlimit="10" stroke-dasharray="" />
     <path fill="none" paint-order="fill stroke markers" d=" M -1275.4931670651329 -107.3181288047698 C 410 20 440 300 -901.5898122102452 -908.5900123370798" stroke-linecap="round" stroke-miterlimit="10" stroke-dasharray="" />
     <path fill="none" paint-order="fill stroke markers" d=" M -679.8400796754657 1084.5355992621248 C 410 20 440 300 -1035.284907588851 -752.718513203139" stroke-linecap="round" stroke-miterlimit="10" stroke-dasharray="" />
