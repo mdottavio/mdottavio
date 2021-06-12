@@ -1,31 +1,25 @@
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1280" height="250" viewBox="0 0 1280 250">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1280" height="250" viewBox="0 0 1280 250" stroke="currentColor">
   <style>
     path {
       stroke-dasharray: 1000;
       stroke-dashoffset: 1000;
-      animation: letsMove 20s infinite;
+      animation: letsMove 18s infinite;
     }
-    
     @keyframes letsMove {
       0%, 100% {
         opacity: 0.058823529411764705;
+        stroke-width: 1;
       }
       50% {
         opacity: 0.088823529411764705;
         stroke-dashoffset: 0;
+        stroke-width: 2;
       }
-      
-    }
-    rect {
-      stroke: rgb(255,255,255);
     }
     path {
-      stroke: rgb(0,0,0);
+      stroke: currentColor;
     }
     @media (prefers-color-scheme: dark) {
-      rect {
-        fill: rgb(34, 39, 46);
-      }
       path {
         stroke: rgb(255,255,255);
       }
@@ -33,7 +27,6 @@
   </style>
   <defs />
   <g>
-    <rect fill="none" stroke-width="1" width="1280" height="250" y="0" x="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null"/>
     <path fill="none" paint-order="fill stroke markers" d=" M 200.70449807569833 1264.1668024640508 C 410 20 440 300 47.90847358204657 1279.103114748392" stroke-linecap="round" stroke-miterlimit="10" stroke-dasharray="" />
     <path fill="none" paint-order="fill stroke markers" d=" M -1275.4931670651329 -107.3181288047698 C 410 20 440 300 -901.5898122102452 -908.5900123370798" stroke-linecap="round" stroke-miterlimit="10" stroke-dasharray="" />
     <path fill="none" paint-order="fill stroke markers" d=" M -679.8400796754657 1084.5355992621248 C 410 20 440 300 -1035.284907588851 -752.718513203139" stroke-linecap="round" stroke-miterlimit="10" stroke-dasharray="" />
@@ -98,5 +91,6 @@
     <path fill="none" paint-order="fill stroke markers" d=" M 776.1539998633698 1017.8334679583356 C 410 20 440 300 949.7424496049156 -858.1312716702814" stroke-linecap="round" stroke-miterlimit="10" stroke-dasharray="" />
     <path fill="none" paint-order="fill stroke markers" d=" M 1240.7618776261031 -314.49954376715226 C 410 20 440 300 1279.9867276471398 5.828983373370362" stroke-linecap="round" stroke-miterlimit="10" stroke-dasharray="" />
     <path fill="none" paint-order="fill stroke markers" d=" M 119.17349532659128 -1274.440142969313 C 410 20 440 300 -392.15799280218704 1218.4465965652166" stroke-linecap="round" stroke-miterlimit="10" stroke-dasharray="" />
+  
   </g>
 </svg>
