@@ -1,4 +1,5 @@
-<img src="https://raw.githubusercontent.com/mdottavio/assets/header-1623523470015.svg" />
+<img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/assets/header-1623523470015.svg" />
+
 ## Welcome
 
 I am a front end developer with several years of experience building solutions with a customer-centric mindset. I am passionate about finding and building solutions that fix their necessities in the right way today and I help escalating them tomorrow.
