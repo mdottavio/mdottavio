@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/assets/header-1623523470015.svg" />
+<a href="https://editor.p5js.org/mdottavio/sketches/eQztX4-2O"><img src="https://raw.githubusercontent.com/mdottavio/mdottavio/master/assets/header-1623523470015.svg" /></a>
 
 ## Welcome
 
